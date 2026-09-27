@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # ── PostgreSQL ────────────────────────────────────────────────────────────
   postgres:
@@ -78,9 +76,10 @@ services:
       context: ./services/backend
       dockerfile: ../../infra/docker/backend/Dockerfile
     environment:
+      NODE_ENV: production
       DATABASE_URL: postgresql://onboardops:password@postgres:5432/onboardops
       REDIS_URL: redis://redis:6379
-      JWT_SECRET: dev-secret-change-in-prod
+      JWT_SECRET: dev-secret-change-in-prod-min-32-chars
       JWT_EXPIRES_IN: 15m
       JWT_REFRESH_EXPIRES_IN: 7d
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
@@ -107,15 +106,17 @@ services:
       context: ./services/incident-manager
       dockerfile: ../../infra/docker/incident-manager/Dockerfile
     environment:
-      DATABASE_URL: postgresql://onboardops:password@postgres:5432/onboardops
+      DATABASE_URL: postgresql+asyncpg://onboardops:password@postgres:5432/onboardops
       REDIS_URL: redis://redis:6379
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o}
+      FIREWORKS_API_KEY: ${FIREWORKS_API_KEY:-}
       BACKEND_URL: http://backend:4000
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
       LOG_LEVEL: debug
       PORT: 5000
     ports:
-      - "5000:5000"
+      - "${INCIDENT_MANAGER_PORT:-5001}:5000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -127,9 +128,11 @@ services:
     build:
       context: ./dashboard
       dockerfile: ../infra/docker/dashboard/Dockerfile
+      args:
+        VITE_INCIDENT_URL: http://localhost:${INCIDENT_MANAGER_PORT:-5001}
     environment:
       VITE_API_URL: http://localhost:4000
-      VITE_INCIDENT_URL: http://localhost:5000
+      VITE_INCIDENT_URL: http://localhost:${INCIDENT_MANAGER_PORT:-5001}
     ports:
       - "3000:80"
     depends_on:

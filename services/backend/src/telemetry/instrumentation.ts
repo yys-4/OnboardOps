@@ -17,7 +17,7 @@ const sdk = new NodeSDK({
       url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT ?? 'http://localhost:4317',
     }),
     exportIntervalMillis: 10_000,
-  }),
+  }) as any,
   instrumentations: [
     getNodeAutoInstrumentations({
       '@opentelemetry/instrumentation-fs': { enabled: false }, // too noisy

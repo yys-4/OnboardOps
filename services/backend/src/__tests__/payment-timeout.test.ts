@@ -93,7 +93,9 @@ async function chargePaymentGatewayFixed(amount: number): Promise<{ success: boo
 // ── Tests ──────────────────────────────────────────────────────────────────
 
 describe('payment-timeout', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   describe('stack trace parsing', () => {
     it('correctly identifies timeout pattern from stack trace', () => {

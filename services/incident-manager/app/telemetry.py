@@ -14,4 +14,4 @@ def setup_telemetry():
         )
     )
     trace.set_tracer_provider(provider)
-    FastAPIInstrumentor.instrument()
+    FastAPIInstrumentor().instrument()

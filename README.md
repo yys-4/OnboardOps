@@ -49,10 +49,12 @@ make up
 # 3. Access
 # Dashboard:         http://localhost:3000
 # Backend API:       http://localhost:4000
-# Incident Manager:  http://localhost:5000
+# Incident Manager:  http://localhost:5001
 # Jaeger (traces):   http://localhost:16686
 # Grafana:           http://localhost:3001
 ```
+
+Compose uses host port 5001 for the Incident Manager because macOS may already use port 5000. Override it with `INCIDENT_MANAGER_PORT` in `.env`; rebuild the dashboard with `docker compose up -d --build dashboard` after changing this port.
 
 ### Option B: Zero-Infra Deployment (Netlify)
 Deploy the platform directly to Netlify with serverless functions and Fireworks AI:

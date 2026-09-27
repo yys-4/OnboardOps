@@ -17,7 +17,7 @@ function issueTokens(user: User): AuthTokens {
   const accessToken = jwt.sign(
     { sub: user.id, email: user.email, role: user.role },
     env.JWT_SECRET,
-    { expiresIn: env.JWT_EXPIRES_IN },
+    { expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] },
   );
   const refreshToken = crypto.randomBytes(40).toString('hex');
   return { accessToken, refreshToken, expiresIn: 900 };
