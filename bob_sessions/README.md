@@ -4,12 +4,11 @@ Folder ini menyimpan dokumentasi screenshot konsumsi token dan task session summ
 
 ## Daftar Task Session & Screenshot Guide
 
-| File Screenshot | Task Name / Prompt | Komponen Yang Dihasilkan |
-|---|---|---|
-| `bob_task01_onboardops_scaffold.png` | Phase 1: Project Scaffolding | Arsitektur monorepo, Docker Compose, TypeScript/Python structure |
-| `bob_task02_onboarding_synthesis.png` | Phase 2: Onboarding & Architecture Explorer | Mermaid architecture models, component graphs, interactive onboarding checklist |
-| `bob_task03_incident_to_fix_hub.png` | Phase 3: Incident Postmortem & Test-Fix Hub | 5-phase autonomous fix pipeline (Parse -> Locate -> Gen Test -> Patch -> Postmortem) |
-| `bob_task04_dashboard_integration.png` | Phase 4: Developer Web Dashboard | UI tabs Onboarding Explorer, Incident Response Hub, Error Lab, & Fix Hub |
+| File Screenshot | Task ID | Prompt Summary | Bobcoins |
+|---|---|---|---|
+| `bob_task01_onboardops_scaffold.png` | `ffdb16c9ba9f7d4a42e6b4666e0cacde` | Phase 1: Initialize OnboardOps Monorepo Scaffolding & Configuration | 8.82 |
+| `bob_task02_onboarding_synthesis.png` | `4e517e9f4212b1b7b9f5a3c98186ceb1` | Phase 2: Codebase Architecture & Mermaid UML Diagrams Synthesis | 16.19 |
+| `bob_task03_dashboard_integration.png` | `d03bf12362beeb3eae777c036c4a8814` | Phase 3 & 4: Developer Dashboard & Incident Fix Hub Integration | 6.77 |
 
 ---
 
