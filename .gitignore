@@ -55,3 +55,6 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
+
+# Runtime data volumes
+.data/
