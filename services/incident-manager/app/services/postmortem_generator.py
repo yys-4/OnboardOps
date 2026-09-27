@@ -10,7 +10,7 @@ from app.models import Postmortem, Incident
 async def generate_postmortem(pm: Postmortem, incident: Incident):
     """Populate postmortem fields from incident. Uses AI if key set."""
 
-    if settings.OPENAI_API_KEY:
+    if settings.FIREWORKS_API_KEY or settings.OPENAI_API_KEY:
         await _ai_generate(pm, incident)
     else:
         _template_generate(pm, incident)
@@ -48,7 +48,15 @@ async def _ai_generate(pm: Postmortem, incident: Incident):
     from openai import AsyncOpenAI
     import json
 
-    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+    if settings.FIREWORKS_API_KEY:
+        client = AsyncOpenAI(
+            api_key=settings.FIREWORKS_API_KEY,
+            base_url=settings.FIREWORKS_BASE_URL,
+        )
+        model = settings.FIREWORKS_MODEL
+    else:
+        client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+        model = settings.OPENAI_MODEL
 
     context = f"""
 Incident: {incident.title}
@@ -78,7 +86,7 @@ Return ONLY valid JSON.
 """
 
     response = await client.chat.completions.create(
-        model=settings.OPENAI_MODEL,
+        model=model,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1500,
         temperature=0.3,

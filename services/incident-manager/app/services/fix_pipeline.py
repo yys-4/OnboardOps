@@ -440,7 +440,16 @@ async def _build_ai_postmortem(
     logs: list[str],
 ) -> PostmortemReport:
     from openai import AsyncOpenAI
-    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    if settings.FIREWORKS_API_KEY:
+        client = AsyncOpenAI(
+            api_key=settings.FIREWORKS_API_KEY,
+            base_url=settings.FIREWORKS_BASE_URL,
+        )
+        model = settings.FIREWORKS_MODEL
+    else:
+        client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+        model = settings.OPENAI_MODEL
 
     context = f"""
 Incident: {title}
@@ -449,7 +458,7 @@ Error type: {error_type}
 Error class: {stack_result.error_class}
 Error message: {stack_result.error_message}
 Suspect files: {', '.join(suspect_files[:5])}
-Primary frame: {stack_result.primary_frame.file}:{stack_result.primary_frame.line} in {stack_result.primary_frame.fn} if stack_result.primary_frame else 'N/A'
+Primary frame: {stack_result.primary_frame.file}:{stack_result.primary_frame.line} in {stack_result.primary_frame.fn if stack_result.primary_frame else 'N/A'}
 Detected patterns: {', '.join(stack_result.detected_patterns)}
 Proposed patch: {patch.description if patch else 'none — manual review required'}
 Recent logs:
@@ -476,7 +485,7 @@ Return ONLY valid JSON.
 """
 
     response = await client.chat.completions.create(
-        model=settings.OPENAI_MODEL,
+        model=model,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1500,
         temperature=0.2,
@@ -549,7 +558,8 @@ async def run_fix_pipeline(
         result.phase_completed = PipelinePhase.patch
 
         # ── Phase 5: Postmortem ───────────────────────────────────────────
-        if settings.OPENAI_API_KEY:
+        has_ai_key = bool(settings.FIREWORKS_API_KEY or settings.OPENAI_API_KEY)
+        if has_ai_key:
             try:
                 pm = await _build_ai_postmortem(
                     incident_id=incident_id,

@@ -42,7 +42,7 @@ async def auto_triage(incident: Incident, logs, db: AsyncSession):
     incident.error_patterns = patterns
 
     # AI summary (only if key configured)
-    if settings.OPENAI_API_KEY:
+    if settings.FIREWORKS_API_KEY or settings.OPENAI_API_KEY:
         try:
             incident.ai_triage_summary = await _ai_summary(log_text, patterns, incident)
         except Exception as e:
@@ -61,7 +61,16 @@ async def auto_triage(incident: Incident, logs, db: AsyncSession):
 
 async def _ai_summary(log_text: str, patterns: List[str], incident: Incident) -> str:
     from openai import AsyncOpenAI
-    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+    if settings.FIREWORKS_API_KEY:
+        client = AsyncOpenAI(
+            api_key=settings.FIREWORKS_API_KEY,
+            base_url=settings.FIREWORKS_BASE_URL,
+        )
+        model = settings.FIREWORKS_MODEL
+    else:
+        client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+        model = settings.OPENAI_MODEL
 
     prompt = f"""You are an SRE triaging a production incident.
 
@@ -80,7 +89,7 @@ Provide a concise triage summary (3-5 sentences) covering:
 """
 
     response = await client.chat.completions.create(
-        model=settings.OPENAI_MODEL,
+        model=model,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=400,
         temperature=0.2,

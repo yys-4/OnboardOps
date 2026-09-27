@@ -15,9 +15,12 @@ class Settings(BaseSettings):
     # Redis
     REDIS_URL: str = "redis://localhost:6379"
 
-    # AI
+    # AI (OpenAI & Fireworks AI support)
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o"
+    FIREWORKS_API_KEY: str = ""
+    FIREWORKS_BASE_URL: str = "https://api.fireworks.ai/inference/v1"
+    FIREWORKS_MODEL: str = "accounts/fireworks/models/glm-5p3-flash"
     POSTMORTEM_AUTO_DRAFT: bool = True
 
     # Backend service
