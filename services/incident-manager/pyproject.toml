@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "onboardops-incident-manager"
+version = "1.0.0"
+description = "OnboardOps incident ingestion, triage, and postmortem engine"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.109.0",
+  "uvicorn[standard]>=0.27.0",
+  "pydantic>=2.6.0",
+  "pydantic-settings>=2.1.0",
+  "sqlalchemy[asyncio]>=2.0.25",
+  "asyncpg>=0.29.0",
+  "alembic>=1.13.1",
+  "redis[hiredis]>=5.0.1",
+  "httpx>=0.26.0",
+  "opentelemetry-api>=1.22.0",
+  "opentelemetry-sdk>=1.22.0",
+  "opentelemetry-exporter-otlp-proto-grpc>=1.22.0",
+  "opentelemetry-instrumentation-fastapi>=0.43b0",
+  "openai>=1.12.0",
+  "structlog>=24.1.0",
+  "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.4",
+  "httpx>=0.26.0",
+  "ruff>=0.2.0",
+  "mypy>=1.8.0",
+]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "N", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
