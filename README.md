@@ -37,10 +37,11 @@ onboardops/
 
 ## Quick Start
 
+### Option A: Local Development
 ```bash
 # 1. Clone & configure
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your FIREWORKS_API_KEY (GLM 5.3 Flash) or OPENAI_API_KEY
 
 # 2. Start all services
 make up
@@ -52,6 +53,15 @@ make up
 # Jaeger (traces):   http://localhost:16686
 # Grafana:           http://localhost:3001
 ```
+
+### Option B: Zero-Infra Deployment (Netlify)
+Deploy the platform directly to Netlify with serverless functions and Fireworks AI:
+1. Import this repository into Netlify.
+2. The included `netlify.toml` automatically configures the build (`dashboard/` with publish `dist/`) and functions (`netlify/functions/`).
+3. Add Environment Variables in Netlify:
+   - `FIREWORKS_API_KEY` = your Fireworks key
+   - `FIREWORKS_MODEL` = `accounts/fireworks/models/glm-5p3-flash`
+4. Click **Deploy Site** — your live dashboard & serverless fix hub are online!
 
 ## Prerequisites
 

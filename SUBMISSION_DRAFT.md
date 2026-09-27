@@ -72,4 +72,4 @@ Our team utilized **IBM Bob 2.0** as the primary autonomous AI pair programmer a
 ## 4. Categories & Technologies Used
 
 - **Categories:** Developer Tools, AI Agents, DevOps / SRE, Productivity
-- **Technologies Used:** IBM Bob 2.0, TypeScript, Node.js, Express, Python, FastAPI, React, Vite, Tailwind CSS, OpenTelemetry, Docker, Vitest, Mermaid.js
+- **Technologies Used:** IBM Bob 2.0, Fireworks AI (GLM 5.3 Flash), TypeScript, Node.js, Express, Python, FastAPI, React, Vite, Tailwind CSS, OpenTelemetry, Netlify Serverless, Docker, Vitest, Mermaid.js
